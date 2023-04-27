@@ -21,8 +21,8 @@ class Route {
   private function route() {
     switch ($this->route) {
       case 'site/new':
-        $this->config->require_callback('SiteRequestCreate');
-        $controller = new SiteRequestCreate($this->args['site_id'], $this->args['site_name'], $this->args['phone']);
+        $this->config->require_callback('NewInvite');
+        $controller = new NewInvite($this->args, $this->config);
         break;
       case 'test':
         $this->config->require_callback('Test');
