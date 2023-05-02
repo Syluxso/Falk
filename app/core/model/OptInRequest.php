@@ -67,6 +67,10 @@ class OptInRequest {
         return $this->hash;
     }
 
+    public function setStatus(int $status): void {
+        $this->status = $status;
+    }
+
     public function toArray(): array {
         return [
             'id' => $this->id,

@@ -38,6 +38,19 @@ class OIRMSSQLHandler implements OptInRequestSQLHandler {
         return new OptInRequest($result['id'], $result['site_id'], $result['site_name'], $result['phone'], $result['status'], $result['created'], $result['hash']);
     }
 
+    public function getByHash($hash): ?OptInRequest {
+        $stmt = $this->pdo->prepare("SELECT * FROM opt_in_request WHERE hash = :hash");
+        $stmt->bindParam(":hash", $hash);
+        $stmt->execute();
+
+        $result = $stmt->fetch();
+        if (!$result) {
+            return null;
+        }
+
+        return new OptInRequest($result['id'], $result['site_id'], $result['site_name'], $result['phone'], $result['status'], $result['created'], $result['hash']);
+    }
+
     public function create(OptInRequest $optInRequest): OptInRequest {
         $stmt = $this->pdo->prepare("INSERT INTO opt_in_request (site_id, site_name, phone, status, created, hash) 
                                      VALUES (:site_id, :site_name, :phone, :status, :created, :hash)");
@@ -53,7 +66,7 @@ class OIRMSSQLHandler implements OptInRequestSQLHandler {
         $stmt->execute();
 
         $id = $this->pdo->lastInsertId();
-        return new OptInRequest($id, $data['site_id'], $data['site_name'], $data['phone'], $data['status'], $data['created'], $data['hash']);
+        return $this->get($id);
     }
 
     public function update($optInRequest): OptInRequest {

@@ -49,6 +49,29 @@ class OIRMySQLHandler implements OptInRequestSQLHandler {
         return $optInRequest;
     }
 
+    public function getByHash($hash) {
+        $stmt = $this->pdo->prepare("SELECT * FROM opt_in_request WHERE hash = :hash");
+        $stmt->bindParam(":hash", $hash);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return null;
+        }
+
+        $optInRequest = new OptInRequest(
+            $result['id'],
+            $result['site_id'],
+            $result['site_name'],
+            $result['phone'],
+            $result['status'],
+            $result['created'],
+            $result['hash']
+        );
+
+        return $optInRequest;
+    }
+
     /**
      * @throws Exception
      */
@@ -99,16 +122,7 @@ class OIRMySQLHandler implements OptInRequestSQLHandler {
         $stmt->bindValue(':id', $optInRequest->getId(), PDO::PARAM_INT);
         $stmt->execute();
 
-        $optInRequestData = $this->get($optInRequest->getId());
-        return new OptInRequest(
-            $optInRequestData['id'],
-            $optInRequestData['site_id'],
-            $optInRequestData['site_name'],
-            $optInRequestData['phone'],
-            $optInRequestData['status'],
-            $optInRequestData['created'],
-            $optInRequestData['hash']
-        );
+        return $this->get($optInRequest->getId());
     }
 
     public function delete($id) {

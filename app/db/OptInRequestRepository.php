@@ -2,6 +2,9 @@
 
 namespace db;
 
+use OptInRequest;
+
+require_once __DIR__ . '/../core/model/OptInRequest.php';
 require_once("OptInRequestSQLHandler.php");
 require_once("handlers/OIRMSSQLHandler.php");
 require_once("handlers/OIRMySQLHandler.php");
@@ -15,6 +18,10 @@ class OptInRequestRepository {
 
     public function get($id) {
         return $this->handler->get($id);
+    }
+
+    public function getByHash($hash): ?OptInRequest{
+        return $this->handler->getByHash($hash);
     }
 
     public function create($data) {
