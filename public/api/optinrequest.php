@@ -23,7 +23,7 @@ if (isset($_POST['phone'], $_POST['site_id'], $_POST['site_name'])) {
         $_POST['site_id'],
         $_POST['site_name'],
         $_POST['phone'],
-        1,
+        0,
         time(),
         $uuid
     );

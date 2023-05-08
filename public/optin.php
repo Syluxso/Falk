@@ -24,13 +24,13 @@ if (!$optInRequest) {
 }
 
 // Check if the OptInRequest has already been opted in
-if ($optInRequest->getStatus() == 2) {
+if ($optInRequest->getStatus() == 1) {
     echo 'You have already opted in.';
     exit;
 }
 
 // Check if the OptInRequest has already been opted out
-if ($optInRequest->getStatus() == 3) {
+if ($optInRequest->getStatus() == 2) {
     echo 'You have already opted out.';
     exit;
 }

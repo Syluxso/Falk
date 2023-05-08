@@ -33,9 +33,9 @@ if (!$request) {
 
 // Update the opt-in status
 if ((bool)$_POST['optin_status']) {
-    $request->setStatus(2);
+    $request->setStatus(1);
 } else {
-    $request->setStatus(3);
+    $request->setStatus(2);
 }
 
 // Save the updated OptInRequest
