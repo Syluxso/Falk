@@ -10,14 +10,17 @@ use PDOException;
 
 class OIRMSSQLHandler implements OptInRequestSQLHandler {
     private $pdo;
+    private $schema;
 
     public function __construct($config) {
         $dsn = sprintf(
-            'sqlsrv:Server=%s,%s;Database=%s',
+            'sqlsrv:Server=%s,%s;Database=%s;TrustServerCertificate=true',
             $config['db_host'],
             $config['db_port'],
             $config['db_name']
         );
+
+        $this->schema = $config['db_schema'] ?? "";
 
         try {
             $this->pdo = new PDO($dsn, $config['db_user'], $config['db_pass']);
@@ -26,7 +29,7 @@ class OIRMSSQLHandler implements OptInRequestSQLHandler {
         }
     }
     public function get($id): ?OptInRequest {
-        $stmt = $this->pdo->prepare("SELECT * FROM opt_in_request WHERE id = :id");
+        $stmt = $this->pdo->prepare("SELECT * FROM $this->schema.opt_in_request WHERE id = :id");
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -39,7 +42,7 @@ class OIRMSSQLHandler implements OptInRequestSQLHandler {
     }
 
     public function getByHash($hash): ?OptInRequest {
-        $stmt = $this->pdo->prepare("SELECT * FROM opt_in_request WHERE hash = :hash");
+        $stmt = $this->pdo->prepare("SELECT * FROM $this->schema.opt_in_request WHERE hash = :hash");
         $stmt->bindParam(":hash", $hash);
         $stmt->execute();
 
@@ -52,7 +55,7 @@ class OIRMSSQLHandler implements OptInRequestSQLHandler {
     }
 
     public function create(OptInRequest $optInRequest): OptInRequest {
-        $stmt = $this->pdo->prepare("INSERT INTO opt_in_request (site_id, site_name, phone, status, created, hash) 
+        $stmt = $this->pdo->prepare("INSERT INTO $this->schema.opt_in_request (site_id, site_name, phone, status, created, hash) 
                                      VALUES (:site_id, :site_name, :phone, :status, :created, :hash)");
 
         $data = $optInRequest->toArray();
@@ -70,7 +73,7 @@ class OIRMSSQLHandler implements OptInRequestSQLHandler {
     }
 
     public function update($optInRequest): OptInRequest {
-        $stmt = $this->pdo->prepare("UPDATE opt_in_request 
+        $stmt = $this->pdo->prepare("UPDATE $this->schema.opt_in_request 
                                      SET site_id = :site_id, site_name = :site_name, phone = :phone, 
                                          status = :status, created = :created, hash = :hash 
                                      WHERE id = :id");
@@ -90,7 +93,7 @@ class OIRMSSQLHandler implements OptInRequestSQLHandler {
     }
 
     public function delete($id): bool {
-        $sql = "DELETE FROM `opt_in_request` WHERE `id` = :id";
+        $sql = "DELETE FROM `$this->schema.opt_in_request` WHERE `id` = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();

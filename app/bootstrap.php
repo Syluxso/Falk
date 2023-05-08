@@ -15,18 +15,18 @@ use notification\Notifier;
 use Twilio\Rest\Client;
 
 // DB Setup
-$dbhander = null;
+$dbhandler = null;
 try {
     if ($config["db_engine"] === "mysql") {
-        $dbhander = new db\handlers\OIRMySQLHandler($config);
+        $dbhandler = new db\handlers\OIRMySQLHandler($config);
     } else {
-        $dbhander = new db\handlers\OIRMSSQLHandler($config);
+        $dbhandler = new db\handlers\OIRMSSQLHandler($config);
     }
 } catch (Exception $e) {
 
 }
 
-$db = new \db\OptInRequestRepository($dbhander);
+$db = new \db\OptInRequestRepository($dbhandler);
 
 // Twilio Setup
 

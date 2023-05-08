@@ -42,7 +42,7 @@
                   }
               },
               submitHandler: function(form) {
-                  var root = "http://localhost/Falk/public";
+                  var root = "https://falk.syworks.test";
                   var url = root + "/api/optinrequest.php";
                   $.ajax({
                       type: "POST",

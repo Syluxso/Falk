@@ -17,7 +17,7 @@ class TwilioNotificationHandler implements NotificationHandler {
 
     public function sendNotification(OptInRequest $optInRequest): bool {
         $phone = $optInRequest->getPhone();
-        $message = "Hello, this is a notification.";
+        $message = "Hello Hello, Mommy! This is from Felicity upstairs using dads project he is working on";
 
         try {
             $this->client->messages->create(

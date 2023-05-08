@@ -12,7 +12,7 @@ class OptInRequest {
         $this->id = $id;
         $this->site_id = $site_id;
         $this->site_name = $site_name;
-        $this->phone = $phone;
+        $this->phone = preg_replace("/[^0-9]/", "", $phone);
         $this->status = $status;
         $this->created = $created;
         $this->hash = $hash;
