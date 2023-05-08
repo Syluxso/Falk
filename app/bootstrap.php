@@ -33,7 +33,7 @@ $db = new \db\OptInRequestRepository($dbhandler);
 // Your Account SID and Auth Token from twilio.com/console
 try{
     $client = new Client($config['twilio_sid'], $config['twilio_token']);
-    $twilioNotificationHandler = new TwilioNotificationHandler($client, $config['twilio_phone']);
+    $twilioNotificationHandler = new TwilioNotificationHandler($client, $config['twilio_phone'], $config['twilio_message'], $config['site_url']);
     $notifier = new Notifier($twilioNotificationHandler);
 } catch (Exception $e){
 

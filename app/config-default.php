@@ -1,6 +1,7 @@
 <?php
 
 $config = [
+    'site_url'=>'https://my.site.com/',
     'db_host' => 'localhost',
     'db_name' => 'my_database',
     'db_user' => 'my_username',
@@ -11,4 +12,5 @@ $config = [
     'twilio_sid'   => 'MYSID',
     'twilio_token' => 'MYTOKEN',
     'twilio_phone' => '5555555555',
+    'twilio_message' => 'Opt in to {{SITE_NAME}}: {{OPT_IN_URL}}'
 ];
